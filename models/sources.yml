@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: hackernews # Un nom que nous donnons à cette source
+    database: HACKER_NEWS_PROJECT # La base de données où elle se trouve
+    schema: RAW # Le schéma où elle se trouve
+    tables:
+      - name: RAW_HACKERNEWS # Le nom de la table
