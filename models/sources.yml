@@ -6,3 +6,8 @@ sources:
     schema: RAW # Le schéma où elle se trouve
     tables:
       - name: RAW_HACKERNEWS # Le nom de la table
+  - name: wikipedia # Notre nouvelle source, ajoutée à la suite
+    database: WIKI_STREAMING_PROJECT
+    schema: RAW
+    tables:
+      - name: RAW_WIKIPEDIA
