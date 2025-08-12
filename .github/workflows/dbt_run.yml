@@ -33,7 +33,7 @@ jobs:
       - name: Configure dbt profile
         run: |
           mkdir -p ~/.dbt
-          echo "hn_analytics:" > ~/.dbt/profiles.yml
+          echo "analytics:" > ~/.dbt/profiles.yml
           echo "  target: dev" >> ~/.dbt/profiles.yml
           echo "  outputs:" >> ~/.dbt/profiles.yml
           echo "    dev:" >> ~/.dbt/profiles.yml
