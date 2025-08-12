@@ -1,5 +1,6 @@
 -- models/staging/stg_wikipedia__edits.sql
 --dummy comment
+--dummy comment2
 with source as (
 
     select * from {{ source('wikipedia', 'RAW_WIKIPEDIA') }}
