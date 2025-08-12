@@ -19,6 +19,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      # --- NOUVELLE ÉTAPE DE TEST ---
+      - name: Test secret access
+        run: echo "La valeur du secret pour le compte est [${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}]"
+      # --------------------------------
+
       - name: Install dbt dependencies
         run: pip install dbt-snowflake
 
