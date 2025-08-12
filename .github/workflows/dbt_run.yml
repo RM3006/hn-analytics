@@ -1,0 +1,59 @@
+# Nom du workflow qui apparaîtra dans l'onglet "Actions" de GitHub
+name: dbt CI/CD Workflow
+
+# Déclencheur : ce workflow s'exécute à chaque 'push' sur la branche 'main'
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run_dbt_and_test:
+    name: Run dbt models and tests
+    runs-on: ubuntu-latest # Le workflow tournera sur une machine virtuelle Linux fournie par GitHub
+
+    steps:
+      # Étape 1 : Récupérer votre code depuis le dépôt
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      # Étape 2 : Mettre en place Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      # Étape 3 : Installer dbt et l'adaptateur Snowflake
+      - name: Install dbt dependencies
+        run: |
+          pip install dbt-snowflake
+
+      # Étape 4 : Créer le fichier profiles.yml à partir des secrets
+      # C'est la manière sécurisée de gérer les identifiants
+      - name: Configure dbt profile
+        run: |
+          mkdir -p ~/.dbt
+          echo "hn_analytics:" > ~/.dbt/profiles.yml
+          echo "  target: dev" >> ~/.dbt/profiles.yml
+          echo "  outputs:" >> ~/.dbt/profiles.yml
+          echo "    dev:" >> ~/.dbt/profiles.yml
+          echo "      type: snowflake" >> ~/.dbt/profiles.yml
+          echo "      account: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}" >> ~/.dbt/profiles.yml
+          echo "      user: ${{ secrets.DBT_SNOWFLAKE_USER }}" >> ~/.dbt/profiles.yml
+          echo "      password: ${{ secrets.DBT_SNOWFLAKE_PASSWORD }}" >> ~/.dbt/profiles.yml
+          echo "      role: SYSADMIN" >> ~/.dbt/profiles.yml
+          echo "      database: WIKI_STREAMING_PROJECT" >> ~/.dbt/profiles.yml
+          echo "      warehouse: COMPUTE_WH" >> ~/.dbt/profiles.yml
+          echo "      schema: ANALYTICS" >> ~/.dbt/profiles.yml
+          echo "      threads: 4" >> ~/.dbt/profiles.yml
+
+      # Étape 5 : Tester la connexion
+      - name: Run dbt debug
+        run: dbt debug
+
+      # Étape 6 : Lancer les commandes dbt
+      - name: Run dbt commands
+        run: |
+          dbt run
+          dbt snapshot
+          dbt test
