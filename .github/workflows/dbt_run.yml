@@ -39,10 +39,8 @@ jobs:
           echo "      schema: ANALYTICS" >> ~/.dbt/profiles.yml
           echo "      threads: 4" >> ~/.dbt/profiles.yml
       
-      # --- NOUVELLE ÉTAPE DE DÉBOGAGE ---
       - name: Display profiles.yml for debugging
         run: cat ~/.dbt/profiles.yml
-      # ------------------------------------
 
       - name: Run dbt debug
         run: dbt debug
