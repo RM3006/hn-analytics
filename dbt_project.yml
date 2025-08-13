@@ -31,7 +31,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 
 models:
-  hn_analytics: # Assurez-vous que c'est bien le nom de votre projet (défini au début de ce fichier)
+  analytics: # Assurez-vous que c'est bien le nom de votre projet (défini au début de ce fichier)
     # Apply this configuration to all models in the "marts" directory
     marts:
       +materialized: table
